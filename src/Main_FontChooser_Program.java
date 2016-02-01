@@ -5,6 +5,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ChangeEvent;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Hashtable;
 
 public class Main_FontChooser_Program {
@@ -26,6 +28,8 @@ public class Main_FontChooser_Program {
 	JColorChooser background_color_chooser = new JColorChooser();
 
 	JPanel preview_Panel = new JPanel(new BorderLayout());
+	JScrollPane preview_Scroll = new JScrollPane(preview_Panel);
+
  
 	String preview_text = "<html>"
 			+ "The quick brown fox jumped over the lazy dog’s back.<br>"
@@ -108,11 +112,11 @@ public void GUI() {
 	
 	JFrame preview = new JFrame();
 	preview.setVisible(true); 
-	preview.setSize(550,500); 
+	preview.setSize(650,550); 
 	preview.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 	preview.setTitle("Preview");
 	
-	preview.add(preview_Panel);
+	preview.add(preview_Scroll);
 	preview_Panel.setBackground(Color.WHITE);
     preview_font.setFont(new Font("Default",Font.PLAIN,20));		
 	preview_Panel.add(preview_font);
@@ -121,12 +125,79 @@ public void GUI() {
 	
 	nameslist.addListSelectionListener(new ListSelectionListener() {
 	      public void valueChanged(ListSelectionEvent e) {
-	    	  int size = font_slider.getValue();
 	    	  String font_selected = nameslist.getSelectedValue().toString();
-	    	  preview_font.setFont(new Font(font_selected,Font.PLAIN, size));
+	    	  Font fontinfo = preview_font.getFont();
+	    	  int size = fontinfo.getSize();
+	    	  int style = fontinfo.getStyle();
+	    	  if (style==0) {
+	  			preview_font.setFont(new Font(font_selected, Font.PLAIN, size));
+	    	  }
+	    	  if (style==1) {
+		  			preview_font.setFont(new Font(font_selected, Font.BOLD, size));
+	    	  }
+	    	  if (style==2) {
+		  			preview_font.setFont(new Font(font_selected, Font.ITALIC, size));
+	    	  }
+	    	  if (style==3) {
+		  			preview_font.setFont(new Font(font_selected, Font.BOLD + Font.ITALIC, size));
+	    	  }
 	      }
 	    });
 	
+	
+    ItemListener itemListener1 = new ItemListener() {
+        public void itemStateChanged(ItemEvent itemEvent) {
+        	Font fontinfo = preview_font.getFont();
+            String fontName = fontinfo.getName();
+	    	int size = fontinfo.getSize();
+	    	int style = fontinfo.getStyle();
+        	int state = itemEvent.getStateChange();
+        	if (state == ItemEvent.SELECTED) {
+        		if (style==0) {
+	  				preview_font.setFont(new Font(fontName, Font.BOLD, size));
+	  			}
+	  			if (style==2) {
+	  				preview_font.setFont(new Font(fontName, Font.BOLD + Font.ITALIC, size));
+	  			}
+        	}
+        	else {
+        		if (style==1) {
+	  				preview_font.setFont(new Font(fontName, Font.PLAIN, size));
+	  			}
+	  			if (style==3) {
+	  				preview_font.setFont(new Font(fontName, Font.ITALIC, size));
+	  			}
+        	}
+        }
+      };
+      bold.addItemListener(itemListener1);
+	
+      ItemListener itemListener2 = new ItemListener() {
+          public void itemStateChanged(ItemEvent itemEvent) {
+          	Font fontinfo = preview_font.getFont();
+            String fontName = fontinfo.getName();
+  	    	int size = fontinfo.getSize();
+  	    	int style = fontinfo.getStyle();
+          	int state = itemEvent.getStateChange();
+          	if (state == ItemEvent.SELECTED) {
+          		if (style==0) {
+  	  				preview_font.setFont(new Font(fontName, Font.ITALIC, size));
+  	  			}
+  	  			if (style==1) {
+  	  				preview_font.setFont(new Font(fontName, Font.BOLD + Font.ITALIC, size));
+  	  			}
+          	}
+          	else {
+          		if (style==2) {
+  	  				preview_font.setFont(new Font(fontName, Font.PLAIN, size));
+  	  			}
+  	  			if (style==3) {
+  	  				preview_font.setFont(new Font(fontName, Font.BOLD, size));
+  	  			}
+          	}
+          }
+        };
+        italic.addItemListener(itemListener2);
 	
 	font_slider.addChangeListener(new ChangeListener() {
 	      public void stateChanged(ChangeEvent evt) {
@@ -137,6 +208,14 @@ public void GUI() {
 	        }
 	    });
 	
+    ColorSelectionModel font_model = font_color_chooser.getSelectionModel();
+    ChangeListener fontchangeListener = new ChangeListener() {
+      public void stateChanged(ChangeEvent changeEvent) {
+        Color newfontcolor = font_color_chooser.getColor();
+        preview_font.setForeground(newfontcolor);      }
+    };
+    font_model.addChangeListener(fontchangeListener);
+	
     ColorSelectionModel background_model = background_color_chooser.getSelectionModel();
     ChangeListener backgroundchangeListener = new ChangeListener() {
       public void stateChanged(ChangeEvent changeEvent) {
@@ -145,14 +224,6 @@ public void GUI() {
       }
     };
     background_model.addChangeListener(backgroundchangeListener);
-    
-    ColorSelectionModel font_model = font_color_chooser.getSelectionModel();
-    ChangeListener fontchangeListener = new ChangeListener() {
-      public void stateChanged(ChangeEvent changeEvent) {
-        Color newfontcolor = font_color_chooser.getColor();
-        preview_font.setForeground(newfontcolor);      }
-    };
-    font_model.addChangeListener(fontchangeListener);
 }
 
 class FontCellRenderer extends DefaultListCellRenderer {
