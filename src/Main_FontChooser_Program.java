@@ -11,31 +11,31 @@ import java.util.Hashtable;
 
 public class Main_FontChooser_Program {
 	
-	JLabel font_type_label = new JLabel ("Font Type"); //this is our Label that will pop up
+	JLabel font_type_label = new JLabel ("Font Type"); //this is our Label for list of fonts
 	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	String[] names = ge.getAvailableFontFamilyNames();//this pulls in all of the fonts (JD's code)
 	
 	JList nameslist = new JList(names);  //this creates a list that the viewer can see so that they can choose
 	JScrollPane names_listScroller = new JScrollPane(nameslist); //this implements a scroller to scroll thru the lists
 	
-	JLabel font_size_label = new JLabel ("Font Size");//this adds a font size application to the panel
+	JLabel font_size_label = new JLabel ("Font Size"); // label for our slider
 	JSlider font_slider = new JSlider(5, 35, 20); //the slider is how we are going to change the size
     
 	JCheckBox bold = new JCheckBox("Bold"); //changing font style
     JCheckBox italic = new JCheckBox("Italic"); //changing font style
 		
-	JPanel font_color_Pane = new JPanel(); //adding a panel for us to add the font color to 
+	JPanel font_color_Pane = new JPanel(); //adding a panel for us to add the font color chooser
 	JColorChooser font_color_chooser = new JColorChooser(); //Color Chooser for choosing font color
 	//http://www.java2s.com/Tutorial/Java/0240__Swing/UseaColorChooser.htm
 	
 	JPanel background_color_Pane = new JPanel();
 	JColorChooser background_color_chooser = new JColorChooser();//again adding a color chooser but this is for the background color
 
-	JPanel preview_Panel = new JPanel(new BorderLayout());
-	JScrollPane preview_Scroll = new JScrollPane(preview_Panel); //adds a panel for us to view the results in 
+	JPanel preview_Panel = new JPanel(new BorderLayout()); //adds a panel for us to view the results in 
+	JScrollPane preview_Scroll = new JScrollPane(preview_Panel); //allows us to scroll around
 
-	//we implement the text that preiviews your choices
-	String preview_text = "<html>"
+	//we implement the text that previews your choices
+	String preview_text = "<html>" //html code allows to have line breaks in a single string
 			+ "The quick brown fox jumped over the lazy dog’s back.<br>"
 			+ "Pack my box with five dozen liquor jugs.<br>"
 			+ "Jackdaws love my big sphinx of quartz.<br>"
@@ -49,7 +49,7 @@ public class Main_FontChooser_Program {
 			+ "!\"#$%&\'()*+,-./:;<=>?@[\\^_z{|}~<br>"
 			+ "uvw wW gq9 2z 5s il17|!j oO08 `'\" ;:,. m nn rn {[()]}u<br>"
 			+ "</html>";
-	JLabel preview_font = new JLabel (preview_text,JLabel.CENTER); //adding this to the 
+	JLabel preview_font = new JLabel (preview_text,JLabel.CENTER); //adding the string to a jlabel. This jlabel is what is displayed.
 
 public Main_FontChooser_Program() {
 		GUI(); 
@@ -57,13 +57,13 @@ public Main_FontChooser_Program() {
 
 public void GUI() {
 	
-	JFrame frame = new JFrame();
+	JFrame frame = new JFrame();//create a frame
 		
-		Box left1 = Box.createVerticalBox();
+		Box left1 = Box.createVerticalBox(); //We organize our GUI with box layout. We add all our components here.
 	    	left1.add(font_type_label);
 	    	names_listScroller.setPreferredSize(new Dimension(390,0));
 	    	nameslist.setCellRenderer(new FontCellRenderer());
-	    	left1.add(Box.createVerticalStrut(5));
+	    	left1.add(Box.createVerticalStrut(5)); //Struts create space in between components.
 	    	left1.add(names_listScroller);
 	    	left1.add(Box.createVerticalStrut(15));
 		Box right1 = Box.createVerticalBox();
@@ -97,7 +97,7 @@ public void GUI() {
 			top1.add(right1);
 			top1.add(Box.createGlue());
 			
-	JTabbedPane jtp = new JTabbedPane();
+	JTabbedPane jtp = new JTabbedPane(); //We are using tabbed panes to organize the three options: font, font color, background color
 	jtp.setFont(new java.awt.Font("Calibri", Font.BOLD,16));			
 	jtp.addTab("Font Style", top1);
 	jtp.addTab("Font Color", font_color_Pane);
@@ -111,7 +111,7 @@ public void GUI() {
     frame.setVisible(true);
 	frame.setSize(710,400); 
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-	frame.setResizable(false);
+	frame.setResizable(false); //I don't want to user to be able to adjust the size of the editor window.
 	frame.setTitle("Editor");
 	
 	JFrame preview = new JFrame();
@@ -127,29 +127,29 @@ public void GUI() {
 
 
 	
-	nameslist.addListSelectionListener(new ListSelectionListener() {
+	nameslist.addListSelectionListener(new ListSelectionListener() { //listener for the font list
 	      public void valueChanged(ListSelectionEvent e) {
 	    	  String font_selected = nameslist.getSelectedValue().toString();
 	    	  Font fontinfo = preview_font.getFont();
 	    	  int size = fontinfo.getSize();
-	    	  int style = fontinfo.getStyle();
-	    	  if (style==0) {
+	    	  int style = fontinfo.getStyle(); 
+	    	  if (style==0) { //When style = 0, the font style is plain.
 	  			preview_font.setFont(new Font(font_selected, Font.PLAIN, size));
 	    	  }
-	    	  if (style==1) {
+	    	  if (style==1) { //When style = 0, the font style is bold.
 		  			preview_font.setFont(new Font(font_selected, Font.BOLD, size));
 	    	  }
-	    	  if (style==2) {
+	    	  if (style==2) { //When style = 0, the font style is italic.
 		  			preview_font.setFont(new Font(font_selected, Font.ITALIC, size));
 	    	  }
-	    	  if (style==3) {
+	    	  if (style==3) { //When style = 0, the font style is bold/italic.
 		  			preview_font.setFont(new Font(font_selected, Font.BOLD + Font.ITALIC, size));
 	    	  }
 	      }
 	    });
 	
 	
-    ItemListener itemListener1 = new ItemListener() {
+    ItemListener itemListener1 = new ItemListener() { //listener for the bold checkbox
         public void itemStateChanged(ItemEvent itemEvent) {
         	Font fontinfo = preview_font.getFont();
             String fontName = fontinfo.getName();
@@ -176,7 +176,7 @@ public void GUI() {
       };
       bold.addItemListener(itemListener1);
 	
-      ItemListener itemListener2 = new ItemListener() {
+      ItemListener itemListener2 = new ItemListener() { //listener for the italic checkbox
           public void itemStateChanged(ItemEvent itemEvent) {
           	Font fontinfo = preview_font.getFont();
             String fontName = fontinfo.getName();
@@ -203,7 +203,7 @@ public void GUI() {
         };
         italic.addItemListener(itemListener2);
 	
-	font_slider.addChangeListener(new ChangeListener() {
+	font_slider.addChangeListener(new ChangeListener() { //listener for the font size slider
 	      public void stateChanged(ChangeEvent evt) {
 	        JSlider font_slider = (JSlider) evt.getSource();
 	        if (font_slider.getValueIsAdjusting()) {
@@ -212,7 +212,7 @@ public void GUI() {
 	        }
 	    });
 	
-    ColorSelectionModel font_model = font_color_chooser.getSelectionModel();
+    ColorSelectionModel font_model = font_color_chooser.getSelectionModel(); //listener for the font color chooser
     ChangeListener fontchangeListener = new ChangeListener() {
       public void stateChanged(ChangeEvent changeEvent) {
         Color newfontcolor = font_color_chooser.getColor();
@@ -220,7 +220,7 @@ public void GUI() {
     };
     font_model.addChangeListener(fontchangeListener);
 	
-    ColorSelectionModel background_model = background_color_chooser.getSelectionModel();
+    ColorSelectionModel background_model = background_color_chooser.getSelectionModel(); //listener for the background color chooser
     ChangeListener backgroundchangeListener = new ChangeListener() {
       public void stateChanged(ChangeEvent changeEvent) {
         Color newBackgroundcolor = background_color_chooser.getColor();
@@ -230,7 +230,7 @@ public void GUI() {
     background_model.addChangeListener(backgroundchangeListener);
 }
 
-class FontCellRenderer extends DefaultListCellRenderer {
+class FontCellRenderer extends DefaultListCellRenderer { //this bonus code was developed with the help of MILES MENAFEE
     public Component getListCellRendererComponent(
         JList list,
         Object value,
