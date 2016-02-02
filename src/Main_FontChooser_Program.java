@@ -11,26 +11,30 @@ import java.util.Hashtable;
 
 public class Main_FontChooser_Program {
 	
-	JLabel font_type_label = new JLabel ("Font Type");
+	JLabel font_type_label = new JLabel ("Font Type"); //this is our Label that will pop up
 	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-	String[] names = ge.getAvailableFontFamilyNames();
-	JList nameslist = new JList(names);  
-	JScrollPane names_listScroller = new JScrollPane(nameslist);
-	JLabel font_size_label = new JLabel ("Font Size");
-	JSlider font_slider = new JSlider(5, 35, 20);
-    JCheckBox bold = new JCheckBox("Bold");
-    JCheckBox italic = new JCheckBox("Italic");
+	String[] names = ge.getAvailableFontFamilyNames();//this pulls in all of the fonts (JD's code)
+	
+	JList nameslist = new JList(names);  //this creates a list that the viewer can see so that they can choose
+	JScrollPane names_listScroller = new JScrollPane(nameslist); //this implements a scroller to scroll thru the lists
+	
+	JLabel font_size_label = new JLabel ("Font Size");//this adds a font size application to the panel
+	JSlider font_slider = new JSlider(5, 35, 20); //the slider is how we are going to change the size
+    
+	JCheckBox bold = new JCheckBox("Bold"); //changing font style
+    JCheckBox italic = new JCheckBox("Italic"); //changing font style
 		
-	JPanel font_color_Pane = new JPanel();
-	JColorChooser font_color_chooser = new JColorChooser();
+	JPanel font_color_Pane = new JPanel(); //adding a panel for us to add the font color to 
+	JColorChooser font_color_chooser = new JColorChooser(); //Color Chooser for choosing font color
+	//http://www.java2s.com/Tutorial/Java/0240__Swing/UseaColorChooser.htm
 	
 	JPanel background_color_Pane = new JPanel();
-	JColorChooser background_color_chooser = new JColorChooser();
+	JColorChooser background_color_chooser = new JColorChooser();//again adding a color chooser but this is for the background color
 
 	JPanel preview_Panel = new JPanel(new BorderLayout());
-	JScrollPane preview_Scroll = new JScrollPane(preview_Panel);
+	JScrollPane preview_Scroll = new JScrollPane(preview_Panel); //adds a panel for us to view the results in 
 
- 
+	//we implement the text that preiviews your choices
 	String preview_text = "<html>"
 			+ "The quick brown fox jumped over the lazy dog’s back.<br>"
 			+ "Pack my box with five dozen liquor jugs.<br>"
@@ -45,7 +49,7 @@ public class Main_FontChooser_Program {
 			+ "!\"#$%&\'()*+,-./:;<=>?@[\\^_z{|}~<br>"
 			+ "uvw wW gq9 2z 5s il17|!j oO08 `'\" ;:,. m nn rn {[()]}u<br>"
 			+ "</html>";
-	JLabel preview_font = new JLabel (preview_text,JLabel.CENTER);
+	JLabel preview_font = new JLabel (preview_text,JLabel.CENTER); //adding this to the 
 
 public Main_FontChooser_Program() {
 		GUI(); 
